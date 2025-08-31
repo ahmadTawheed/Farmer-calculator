@@ -1,0 +1,2663 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thamra Tech</title>
+    
+    <!-- External Libraries -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    
+    <!-- Google Fonts - Cairo for Arabic -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-green: #2d6a4f;
+            --secondary-green: #52b788;
+            --light-green: #d8f3dc;
+            --dark-green: #1b4332;
+            --accent-orange: #f77f00;
+            --bg-light: #f8f9fa;
+            --text-gray: #4a5568;
+            --border-gray: #e2e8f0;
+        }
+        
+        body {
+            font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-gray);
+            line-height: 1.6;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
+        }
+        
+        .card-shadow {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease;
+        }
+        
+        .card-shadow:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-green);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--dark-green);
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background-color: #6b7280;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #4b5563;
+        }
+        
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+        
+        .nav-item {
+            transition: all 0.3s ease;
+            padding: 8px;
+            cursor: pointer;
+        }
+        
+        .nav-item.active {
+            color: var(--primary-green);
+        }
+        
+        .nav-item:hover {
+            background-color: var(--light-green);
+            border-radius: 8px;
+        }
+        
+        .page {
+            display: none;
+            min-height: calc(100vh - 80px);
+            padding-bottom: 80px;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        @media (min-width: 768px) {
+            .bottom-nav {
+                display: none;
+            }
+            
+            .page {
+                padding-bottom: 40px;
+            }
+        }
+        
+        .input-group {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        
+        .input-group input,
+        .input-group select,
+        .input-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border-gray);
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background-color: white;
+        }
+        
+        .input-group input:focus,
+        .input-group select:focus,
+        .input-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-green);
+            box-shadow: 0 0 0 3px rgba(45, 106, 79, 0.1);
+        }
+        
+        .floating-label {
+            position: absolute;
+            right: 16px;
+            top: 12px;
+            transition: all 0.3s ease;
+            pointer-events: none;
+            color: #9ca3af;
+            font-size: 16px;
+        }
+        
+        .input-group input:focus + .floating-label,
+        .input-group input:not(:placeholder-shown) + .floating-label,
+        .input-group textarea:focus + .floating-label,
+        .input-group textarea:not(:placeholder-shown) + .floating-label {
+            transform: translateY(-25px) scale(0.85);
+            color: var(--primary-green);
+            background-color: white;
+            padding: 0 4px;
+        }
+        
+        .result-card {
+            background: linear-gradient(135deg, var(--light-green) 0%, white 100%);
+            border: 2px solid var(--secondary-green);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-green);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title i {
+            margin-left: 12px;
+            font-size: 1.8rem;
+        }
+        
+        .grid-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .record-item {
+            background: white;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border: 1px solid var(--border-gray);
+            transition: all 0.3s ease;
+        }
+        
+        .record-item:hover {
+            border-color: var(--secondary-green);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #9ca3af;
+        }
+        
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 16px;
+            color: #d1d5db;
+        }
+        
+        .delete-btn {
+            background-color: #ef4444;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .delete-btn:hover {
+            background-color: #dc2626;
+        }
+        
+        .edit-btn {
+            background-color: #3b82f6;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            margin-left: 8px;
+        }
+        
+        .edit-btn:hover {
+            background-color: #2563eb;
+        }
+        
+        .stats-card {
+            background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+        
+        .stats-card h3 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        
+        .stats-card p {
+            opacity: 0.9;
+        }
+        
+        .info-note {
+            background-color: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+        }
+        
+        .info-note i {
+            color: #f59e0b;
+            margin-left: 8px;
+        }
+        
+        .calculation-breakdown {
+            background-color: #f3f4f6;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+        
+        .calculation-step {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .calculation-step:last-child {
+            border-bottom: none;
+        }
+        
+        .calculation-step .label {
+            font-weight: 600;
+            color: var(--text-gray);
+        }
+        
+        .calculation-step .value {
+            font-weight: 700;
+            color: var(--primary-green);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+        }
+        
+        .close {
+            position: absolute;
+            left: 20px;
+            top: 15px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #aaa;
+        }
+        
+        .close:hover {
+            color: #000;
+        }
+        
+        .login-container {
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 40px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .login-header i {
+            font-size: 3rem;
+            color: var(--primary-green);
+            margin-bottom: 10px;
+        }
+        
+        .crop-tag {
+            display: inline-block;
+            background-color: var(--light-green);
+            color: var(--primary-green);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            margin: 2px;
+        }
+        
+        .transaction-type {
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .transaction-income {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+        
+        .transaction-expense {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .transaction-service {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+        
+        @media (max-width: 768px) {
+            .record-item {
+                padding: 12px;
+            }
+            
+            .record-item .flex {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .record-item .flex .space-x-4 {
+                margin-top: 8px;
+                flex-wrap: wrap;
+            }
+            
+            .record-item .space-x-2 {
+                margin-top: 8px;
+            }
+        }
+        
+        .transaction-card {
+            background: white;
+            border: 1px solid var(--border-gray);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .transaction-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-color: var(--secondary-green);
+        }
+        
+        .transaction-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+        
+        .transaction-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-gray);
+            margin-bottom: 4px;
+        }
+        
+        .transaction-date {
+            font-size: 14px;
+            color: #6b7280;
+        }
+        
+        .transaction-amount {
+            font-size: 20px;
+            font-weight: 700;
+            text-align: left;
+        }
+        
+        .transaction-amount.income {
+            color: #059669;
+        }
+        
+        .transaction-amount.expense {
+            color: #dc2626;
+        }
+        
+        .transaction-amount.service {
+            color: #2563eb;
+        }
+        
+        .transaction-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .transaction-detail {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            color: #6b7280;
+        }
+        
+        .transaction-detail i {
+            margin-left: 8px;
+            color: var(--primary-green);
+        }
+        
+        .transaction-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-gray);
+        }
+        
+        .transaction-status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 8px;
+        }
+        
+        .status-paid {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+        
+        .status-unpaid {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="loginPage" class="page active" style="display: block !important;">
+        <div class="login-container">
+            <div class="login-header">
+                <i class="fas fa-seedling"></i>
+                <h2 class="text-2xl font-bold text-gray-800">حاسبة الفلاح الزراعية</h2>
+                <p class="text-gray-600">تسجيل الدخول</p>
+            </div>
+            
+            <div class="space-y-4">
+                <div class="input-group">
+                    <input type="text" id="loginName" placeholder=" " class="w-full">
+                    <label class="floating-label">اسم المستخدم</label>
+                </div>
+                
+                <button onclick="login()" class="w-full btn-primary">
+                    <i class="fas fa-sign-in-alt ml-2"></i>دخول
+                </button>
+                
+                <p class="text-center text-sm text-gray-500">
+                    أدخل اسمك للبدء في استخدام النظام
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Header -->
+    <header class="gradient-bg text-white p-4 shadow-lg" id="mainHeader" style="display: none;">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center">
+                <h1 class="text-2xl md:text-3xl font-bold flex items-center">
+                    <i class="fas fa-seedling ml-3"></i>
+                    Thamra Tech
+                </h1>
+                <div class="mr-6 hidden md:block">
+                    <span class="text-lg">أهلاً بك، </span>
+                    <span class="text-xl font-semibold" id="welcomeUser">...</span>
+                </div>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button onclick="navigateToPage('settings')" class="bg-white bg-opacity-20 text-white px-4 py-2 rounded-lg hover:bg-opacity-30 transition">
+                    <i class="fas fa-cog ml-2"></i>الإعدادات
+                </button>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Desktop Navigation -->
+    <nav class="bg-white shadow-md hidden md:block" id="desktopNav" style="display: none;">
+        <div class="container mx-auto">
+            <ul class="flex justify-center space-x-8 py-4">
+                <!-- <li><a href="#" onclick="navigateToPage('home'); return false;" class="nav-link text-green-800 hover:text-green-600 font-semibold px-4 py-2 rounded-lg hover:bg-green-50 transition">
+                    <i class="fas fa-home ml-2"></i>الرئيسية
+                </a></li>
+                <li><a href="#" onclick="navigateToPage('fertilizer'); return false;" class="nav-link text-green-800 hover:text-green-600 font-semibold px-4 py-2 rounded-lg hover:bg-green-50 transition">
+                    <i class="fas fa-flask ml-2"></i>حساب التسميد
+                </a></li>
+                <li><a href="#" onclick="navigateToPage('spray'); return false;" class="nav-link text-green-800 hover:text-green-600 font-semibold px-4 py-2 rounded-lg hover:bg-green-50 transition">
+                    <i class="fas fa-spray-can ml-2"></i>حساب الرش
+                </a></li>
+                <li><a href="#" onclick="navigateToPage('transactions'); return false;" class="nav-link text-green-800 hover:text-green-600 font-semibold px-4 py-2 rounded-lg hover:bg-green-50 transition">
+                    <i class="fas fa-clipboard-list ml-2"></i>المعاملات
+                </a></li> -->
+                <li><a href="#" onclick="navigateToPage('conversion'); return false;" class="nav-link text-green-800 hover:text-green-600 font-semibold px-4 py-2 rounded-lg hover:bg-green-50 transition">
+                    <i class="fas fa-exchange-alt ml-2"></i>تحويل الوحدات
+                </a></li>
+                <!-- <li><a href="#" onclick="navigateToPage('records'); return false;" class="nav-link text-green-800 hover:text-green-600 font-semibold px-4 py-2 rounded-lg hover:bg-green-50 transition">
+                    <i class="fas fa-history ml-2"></i>السجلات
+                </a></li> -->
+                <li><a href="#" onclick="navigateToPage('guide'); return false;" class="nav-link text-green-800 hover:text-green-600 font-semibold px-4 py-2 rounded-lg hover:bg-green-50 transition">
+                    <i class="fas fa-book ml-2"></i>دليل سريع
+                </a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <main class="container mx-auto p-4" id="mainContent" style="display: none;">
+        <!-- Home Page -->
+        <div id="home" class="page">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl md:text-4xl font-bold text-green-800 mb-4">مرحباً بك في حاسبة الفلاح</h2>
+                <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">Made By Ahmed Tawheed</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                <div class="grid-card cursor-pointer transform hover:scale-105 transition" onclick="navigateToPage('fertilizer')">
+                    <div class="text-center">
+                        <div class="bg-green-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-flask text-3xl text-green-600"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800">حساب التسميد</h3>
+                        <p class="text-gray-600">احسب كميات الأسمدة المطلوبة لأرضك بدقة</p>
+                    </div>
+                </div>
+                
+                <div class="grid-card cursor-pointer transform hover:scale-105 transition" onclick="navigateToPage('spray')">
+                    <div class="text-center">
+                        <div class="bg-blue-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-spray-can text-3xl text-blue-600"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800">حساب الرش</h3>
+                        <p class="text-gray-600">حدد كمية المبيدات وعدد الرشات المطلوبة</p>
+                    </div>
+                </div>
+                
+                <div class="grid-card cursor-pointer transform hover:scale-105 transition" onclick="navigateToPage('transactions')">
+                    <div class="text-center">
+                        <div class="bg-purple-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-clipboard-list text-3xl text-purple-600"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800">المعاملات الزراعية</h3>
+                        <p class="text-gray-600">سجل جميع العمليات الزراعية وتكاليفها</p>
+                    </div>
+                </div>
+                
+                <div class="grid-card cursor-pointer transform hover:scale-105 transition" onclick="navigateToPage('conversion')">
+                    <div class="text-center">
+                        <div class="bg-orange-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-exchange-alt text-3xl text-orange-600"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800">تحويل الوحدات</h3>
+                        <p class="text-gray-600">حول بين وحدات المساحة والكميات بسهولة</p>
+                    </div>
+                </div>
+                
+                <div class="grid-card cursor-pointer transform hover:scale-105 transition" onclick="navigateToPage('records')">
+                    <div class="text-center">
+                        <div class="bg-yellow-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-history text-3xl text-yellow-600"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800">السجلات المحفوظة</h3>
+                        <p class="text-gray-600">استعرض جميع الحسابات السابقة المحفوظة</p>
+                    </div>
+                </div>
+                
+                <div class="grid-card cursor-pointer transform hover:scale-105 transition" onclick="navigateToPage('guide')">
+                    <div class="text-center">
+                        <div class="bg-indigo-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-book text-3xl text-indigo-600"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800">دليل سريع</h3>
+                        <p class="text-gray-600">تعرف على المصطلحات الزراعية الأساسية</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- User Info Card -->
+            <div class="grid-card">
+                <h3 class="section-title">
+                    <i class="fas fa-user-circle"></i>معلوماتك
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <p class="font-semibold text-gray-700 mb-2">الاسم:</p>
+                        <p class="text-lg" id="homeUserName">...</p>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-gray-700 mb-2">الميزانية الزراعية:</p>
+                        <p class="text-lg" id="homeBudget">غير محدد</p>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-gray-700 mb-2">المحاصيل:</p>
+                        <div id="homeCrops">لم يتم تحديد محاصيل</div>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-gray-700 mb-2">إجمالي المعاملات:</p>
+                        <p class="text-lg" id="homeTransactions">0</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Fertilizer Calculation Page -->
+        <div id="fertilizer" class="page">
+            <h2 class="section-title">
+                <i class="fas fa-flask"></i>حساب التسميد
+            </h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="grid-card">
+                    <h3 class="text-xl font-semibold mb-6 text-gray-800">بيانات الأرض والسماد</h3>
+                    
+                    <div class="space-y-4">
+                        <div class="input-group">
+                            <input type="number" id="landArea" placeholder=" " class="w-full">
+                            <label class="floating-label">مساحة الأرض</label>
+                        </div>
+                        
+                        <div class="flex space-x-3">
+                            <button onclick="setUnit('qirat')" id="qiratBtn" class="flex-1 py-3 px-4 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-semibold">قيراط</button>
+                            <button onclick="setUnit('feddan')" id="feddanBtn" class="flex-1 py-3 px-4 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition font-semibold">فدان</button>
+                        </div>
+                        
+                        <div>
+                            <label class="block mb-2 font-semibold text-gray-700">نوع السماد</label>
+                            <select id="fertilizerType" class="w-full">
+                                <option value="urea">يوريا (46% N)</option>
+                                <option value="ammonium">سلفات نشادر (21% N)</option>
+                                <option value="npk">NPK (15-15-15)</option>
+                                <option value="super">سوبر فوسفات (15% P)</option>
+                                <option value="potassium">سلفات بوتاسيوم (50% K)</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block mb-2 font-semibold text-gray-700">اختيار المحصول (اختياري)</label>
+                            <select id="cropType" onchange="updateFertilizerAmount()" class="w-full">
+                                <option value="">حساب عام</option>
+                                <option value="wheat">قمح</option>
+                                <option value="corn">ذرة</option>
+                                <option value="rice">أرز</option>
+                                <option value="potato">بطاطس</option>
+                                <option value="tomato">طماطم</option>
+                                <option value="cucumber">خيار</option>
+                                <option value="onion">بصل</option>
+                                <option value="beans">فول</option>
+                                <option value="clover">برسيم</option>
+                                <option value="sugarcane">قصب</option>
+                                <option value="cotton">قطن</option>
+                                <option value="barley">شعير</option>
+                                <option value="sorghum">ذرة الرفيعة</option>
+                                <option value="sunflower">دوار الشمس</option>
+                                <option value="pepper">فلفل</option>
+                                <option value="eggplant">باذنجان</option>
+                                <option value="cabbage">كرنب</option>
+                                <option value="carrot">جزر</option>
+                                <option value="lettuce">خس</option>
+                                <option value="other">أخرى</option>
+                            </select>
+                        </div>
+                        
+                        <div class="input-group" id="customCropGroup" style="display: none;">
+                            <input type="text" id="customCropName" placeholder=" " class="w-full">
+                            <label class="floating-label">اسم المحصول</label>
+                        </div>
+                        
+                        <div class="input-group">
+                            <input type="number" id="fertilizerAmount" placeholder=" " class="w-full">
+                            <label class="floating-label">الكمية المطلوبة للوحدة المساحة (كجم/فدان)</label>
+                        </div>
+                        
+                        <div class="input-group">
+                            <input type="number" id="bagPrice" placeholder=" " class="w-full">
+                            <label class="floating-label">سعر الشكارة (جنيه) - اختياري</label>
+                        </div>
+                        
+                        <button onclick="calculateFertilizer()" class="w-full btn-primary">
+                            <i class="fas fa-calculator ml-2"></i>احسب
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="grid-card">
+                    <h3 class="text-xl font-semibold mb-6 text-gray-800">النتائج</h3>
+                    <div id="fertilizerResults" class="hidden">
+                        <!-- Calculation Breakdown -->
+                        <div class="calculation-breakdown" id="calculationBreakdown">
+                            <h4 class="font-semibold mb-3 text-gray-800">خطوات الحساب</h4>
+                            <div class="calculation-step">
+                                <span class="label">المساحة المدخلة:</span>
+                                <span class="value" id="stepArea">0</span>
+                            </div>
+                            <div class="calculation-step">
+                                <span class="label">المساحة بالفدان:</span>
+                                <span class="value" id="stepAreaInFeddan">0</span>
+                            </div>
+                            <div class="calculation-step">
+                                <span class="label">الكمية المطلوبة للفدان:</span>
+                                <span class="value" id="stepFertilizerPerFeddan">0 كجم</span>
+                            </div>
+                            <div class="calculation-step">
+                                <span class="label">الكمية الإجمالية المطلوبة:</span>
+                                <span class="value" id="stepTotalFertilizer">0 كجم</span>
+                            </div>
+                            <div class="calculation-step">
+                                <span class="label">عدد الشكاير (50 كجم):</span>
+                                <span class="value" id="stepTotalBags">0</span>
+                            </div>
+                        </div>
+                        
+                        <div class="result-card">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="text-center">
+                                    <p class="text-gray-600 font-medium">عدد الشكاير</p>
+                                    <p class="text-3xl font-bold text-green-700" id="totalBags">0</p>
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-gray-600 font-medium">الوزن الإجمالي (كجم)</p>
+                                    <p class="text-3xl font-bold text-green-700" id="totalWeight">0</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-50 rounded-lg p-4 mb-4">
+                            <h4 class="font-semibold mb-3 text-gray-800">تحليل العناصر</h4>
+                            <div class="space-y-3">
+                                <div class="flex justify-between items-center p-2 bg-white rounded">
+                                    <span class="font-medium">النيتروجين (N):</span>
+                                    <span class="font-bold text-green-700" id="nitrogenAmount">0 وحدة</span>
+                                </div>
+                                <div class="flex justify-between items-center p-2 bg-white rounded">
+                                    <span class="font-medium">الفوسفور (P):</span>
+                                    <span class="font-bold text-green-700" id="phosphorusAmount">0 وحدة</span>
+                                </div>
+                                <div class="flex justify-between items-center p-2 bg-white rounded">
+                                    <span class="font-medium">البوتاسيوم (K):</span>
+                                    <span class="font-bold text-green-700" id="potassiumAmount">0 وحدة</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="stats-card" id="costSection">
+                            <div class="flex justify-between items-center">
+                                <span class="text-lg font-semibold">التكلفة الإجمالية:</span>
+                                <span class="text-3xl font-bold" id="totalCost">0 جنيه</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="block mb-2 font-semibold text-gray-700">ملاحظات</label>
+                            <textarea id="fertilizerNotes" class="w-full" rows="3" placeholder="أضف ملاحظاتك هنا..."></textarea>
+                        </div>
+                        
+                        <button onclick="saveFertilizerResults()" class="w-full btn-primary">
+                            <i class="fas fa-save ml-2"></i>حفظ النتائج
+                        </button>
+                    </div>
+                    
+                    <div id="fertilizerPlaceholder" class="empty-state">
+                        <i class="fas fa-chart-bar"></i>
+                        <p>أدخل البيانات واضغط على احسب لعرض النتائج</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Spray Calculation Page -->
+        <div id="spray" class="page">
+            <h2 class="section-title">
+                <i class="fas fa-spray-can"></i>حساب الرش
+            </h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="grid-card">
+                    <h3 class="text-xl font-semibold mb-6 text-gray-800">بيانات الرش</h3>
+                    
+                    <div class="info-note">
+                        <i class="fas fa-info-circle"></i>
+                        <span class="text-sm">يمكنك معرفة كمية الرش المطلوبة لكل وحدة مساحة من عبوة المبيد - عادة ما تكتب على العبوة</span>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div class="input-group">
+                            <input type="number" id="sprayLandArea" placeholder=" " class="w-full">
+                            <label class="floating-label">مساحة الأرض</label>
+                        </div>
+                        
+                        <div class="flex space-x-3">
+                            <button onclick="setSprayUnit('qirat')" id="sprayQiratBtn" class="flex-1 py-3 px-4 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-semibold">قيراط</button>
+                            <button onclick="setSprayUnit('feddan')" id="sprayFeddanBtn" class="flex-1 py-3 px-4 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition font-semibold">فدان</button>
+                        </div>
+                        
+                        <div class="input-group">
+                            <input type="number" id="sprayAmountPerUnit" placeholder=" " class="w-full">
+                            <label class="floating-label">كمية الرش لكل وحدة مساحة (لتر/فدان)</label>
+                        </div>
+                        
+                        <div class="input-group">
+                            <input type="number" id="numberOfSprays" placeholder=" " class="w-full">
+                            <label class="floating-label">عدد الرشات المطلوبة</label>
+                        </div>
+                        
+                        <div class="input-group">
+                            <input type="number" id="sprayPrice" placeholder=" " class="w-full">
+                            <label class="floating-label">سعر اللتر (جنيه) - اختياري</label>
+                        </div>
+                        
+                        <button onclick="calculateSpray()" class="w-full btn-primary">
+                            <i class="fas fa-calculator ml-2"></i>احسب
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="grid-card">
+                    <h3 class="text-xl font-semibold mb-6 text-gray-800">النتائج</h3>
+                    <div id="sprayResults" class="hidden">
+                        <div class="result-card">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="text-center">
+                                    <p class="text-gray-600 font-medium">إجمالي كمية المبيد</p>
+                                    <p class="text-3xl font-bold text-green-700" id="totalPesticide">0 لتر</p>
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-gray-600 font-medium">عدد العبوات (5 لتر)</p>
+                                    <p class="text-3xl font-bold text-green-700" id="totalContainers">0</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-blue-50 rounded-lg p-4 mb-4">
+                            <h4 class="font-semibold mb-3 text-gray-800">تفاصيل الرش</h4>
+                            <div class="space-y-3">
+                                <div class="flex justify-between items-center p-2 bg-white rounded">
+                                    <span class="font-medium">كمية الرش للرشة الواحدة:</span>
+                                    <span class="font-bold text-blue-700" id="sprayPerSession">0 لتر</span>
+                                </div>
+                                <div class="flex justify-between items-center p-2 bg-white rounded">
+                                    <span class="font-medium">إجمالي عدد الرشات:</span>
+                                    <span class="font-bold text-blue-700" id="totalSpraySessions">0</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="stats-card" id="sprayCostSection">
+                            <div class="flex justify-between items-center">
+                                <span class="text-lg font-semibold">التكلفة الإجمالية:</span>
+                                <span class="text-3xl font-bold" id="sprayTotalCost">0 جنيه</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="block mb-2 font-semibold text-gray-700">ملاحظات</label>
+                            <textarea id="sprayNotes" class="w-full" rows="3" placeholder="أضف ملاحظاتك هنا..."></textarea>
+                        </div>
+                        
+                        <button onclick="saveSprayResults()" class="w-full btn-primary">
+                            <i class="fas fa-save ml-2"></i>حفظ النتائج
+                        </button>
+                    </div>
+                    
+                    <div id="sprayPlaceholder" class="empty-state">
+                        <i class="fas fa-spray-can"></i>
+                        <p>أدخل بيانات الرش واضغط على احسب لعرض النتائج</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Transactions Page -->
+        <div id="transactions" class="page">
+            <h2 class="section-title">
+                <i class="fas fa-clipboard-list"></i>المعاملات الزراعية
+            </h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-1">
+                    <div class="grid-card">
+                        <h3 class="text-xl font-semibold mb-6 text-gray-800">إضافة معاملة جديدة</h3>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block mb-2 font-semibold text-gray-700">نوع المعاملة</label>
+                                <select id="transactionType" onchange="handleTransactionTypeChange()" class="w-full">
+                                    <option value="income">دخل (بيع محصول)</option>
+                                    <option value="expense">مصروف (شراء مستلزمات)</option>
+                                    <option value="service">خدمة أرض</option>
+                                </select>
+                            </div>
+                            
+                            <div class="input-group">
+                                <input type="text" id="transactionName" placeholder=" " class="w-full">
+                                <label class="floating-label">اسم العملية</label>
+                            </div>
+                            
+                            <div>
+                                <label class="block mb-2 font-semibold text-gray-700">المحصول</label>
+                                <select id="transactionCrop" onchange="handleCropChange()" class="w-full">
+                                    <option value="wheat">قمح</option>
+                                    <option value="corn">ذرة</option>
+                                    <option value="rice">أرز</option>
+                                    <option value="potato">بطاطس</option>
+                                    <option value="tomato">طماطم</option>
+                                    <option value="cucumber">خيار</option>
+                                    <option value="onion">بصل</option>
+                                    <option value="beans">فول</option>
+                                    <option value="clover">برسيم</option>
+                                    <option value="sugarcane">قصب</option>
+                                    <option value="cotton">قطن</option>
+                                    <option value="barley">شعير</option>
+                                    <option value="sorghum">ذرة الرفيعة</option>
+                                    <option value="sunflower">دوار الشمس</option>
+                                    <option value="pepper">فلفل</option>
+                                    <option value="eggplant">باذنجان</option>
+                                    <option value="cabbage">كرنب</option>
+                                    <option value="carrot">جزر</option>
+                                    <option value="lettuce">خس</option>
+                                    <option value="other">أخرى</option>
+                                </select>
+                            </div>
+                            
+                            <div class="input-group" id="customTransactionCropGroup" style="display: none;">
+                                <input type="text" id="customTransactionCropName" placeholder=" " class="w-full">
+                                <label class="floating-label">اسم المحصول</label>
+                            </div>
+                            
+                            <div class="input-group">
+                                <input type="number" id="transactionAmount" placeholder=" " class="w-full">
+                                <label class="floating-label">المبلغ (جنيه)</label>
+                            </div>
+                            
+                            <div id="paymentFields" style="display: none;">
+                                <div>
+                                    <label class="block mb-2 font-semibold text-gray-700">هل تم الدفع؟</label>
+                                    <select id="isPaid" onchange="handlePaymentChange()" class="w-full">
+                                        <option value="yes">نعم</option>
+                                        <option value="no">لا</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="input-group" id="remainingAmountGroup" style="display: none;">
+                                    <input type="number" id="remainingAmount" placeholder=" " class="w-full">
+                                    <label class="floating-label">الباقي (جنيه)</label>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block mb-2 font-semibold text-gray-700">التاريخ</label>
+                                <input type="date" id="transactionDate" class="w-full p-3 border rounded-lg focus:outline-none focus:border-green-500">
+                            </div>
+                            
+                            <div class="input-group">
+                                <input type="text" id="transactionFor" placeholder=" " class="w-full">
+                                <label class="floating-label">لـ/من</label>
+                            </div>
+                            
+                            <div class="input-group">
+                                <textarea id="transactionNotes" placeholder=" " class="w-full" rows="3"></textarea>
+                                <label class="floating-label">ملاحظات</label>
+                            </div>
+                            
+                            <button onclick="saveTransaction()" class="w-full btn-primary">
+                                <i class="fas fa-save ml-2"></i>حفظ المعاملة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="lg:col-span-2">
+                    <div class="grid-card">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-xl font-semibold text-gray-800">سجل المعاملات</h3>
+                            <div class="flex space-x-4">
+                                <div class="text-center">
+                                    <p class="text-sm text-gray-600">إجمالي الدخل</p>
+                                    <p class="text-lg font-bold text-green-600" id="totalIncome">0 جنيه</p>
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-sm text-gray-600">إجمالي المصروف</p>
+                                    <p class="text-lg font-bold text-red-600" id="totalExpense">0 جنيه</p>
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-sm text-gray-600">الصافي</p>
+                                    <p class="text-lg font-bold" id="netBalance">0 جنيه</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="transactionsList" class="space-y-3 max-h-96 overflow-y-auto">
+                            <div class="empty-state">
+                                <i class="fas fa-receipt"></i>
+                                <p>لا توجد معاملات مسجلة</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Unit Conversion Page -->
+        <div id="conversion" class="page">
+            <h2 class="section-title">
+                <i class="fas fa-exchange-alt"></i>تحويل الوحدات
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Area Conversion -->
+                <div class="grid-card">
+                    <h3 class="text-xl font-semibold mb-4 text-gray-800">
+                        <i class="fas fa-map ml-2"></i>تحويل المساحة
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <div class="input-group">
+                            <input type="number" id="areaInput" placeholder=" " oninput="convertArea()" class="w-full">
+                            <label class="floating-label">القيمة</label>
+                        </div>
+                        
+                        <div>
+                            <label class="block mb-2 font-semibold text-gray-700">من</label>
+                            <select id="fromUnit" onchange="convertArea()" class="w-full">
+                                <option value="qirat">قيراط</option>
+                                <option value="feddan">فدان</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block mb-2 font-semibold text-gray-700">إلى</label>
+                            <select id="toUnit" onchange="convertArea()" class="w-full">
+                                <option value="feddan">فدان</option>
+                                <option value="qirat">قيراط</option>
+                            </select>
+                        </div>
+                        
+                        <div class="bg-green-50 rounded-lg p-6 text-center">
+                            <p class="text-gray-600 mb-2 font-medium">النتيجة</p>
+                            <p class="text-3xl font-bold text-green-700" id="areaResult">0</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Weight Conversion -->
+                <div class="grid-card">
+                    <h3 class="text-xl font-semibold mb-4 text-gray-800">
+                        <i class="fas fa-weight ml-2"></i>تحويل الوزن
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <div class="input-group">
+                            <input type="number" id="weightInput" placeholder=" " oninput="convertWeight()" class="w-full">
+                            <label class="floating-label">القيمة</label>
+                        </div>
+                        
+                        <div>
+                            <label class="block mb-2 font-semibold text-gray-700">من</label>
+                            <select id="fromWeightUnit" onchange="convertWeight()" class="w-full">
+                                <option value="kg">كيلوجرام</option>
+                                <option value="bag">شكارة (50 كجم)</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block mb-2 font-semibold text-gray-700">إلى</label>
+                            <select id="toWeightUnit" onchange="convertWeight()" class="w-full">
+                                <option value="bag">شكارة (50 كجم)</option>
+                                <option value="kg">كيلوجرام</option>
+                            </select>
+                        </div>
+                        
+                        <div class="bg-green-50 rounded-lg p-6 text-center">
+                            <p class="text-gray-600 mb-2 font-medium">النتيجة</p>
+                            <p class="text-3xl font-bold text-green-700" id="weightResult">0</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Element Conversion -->
+                <div class="grid-card">
+                    <h3 class="text-xl font-semibold mb-4 text-gray-800">
+                        <i class="fas fa-atom ml-2"></i>تحويل العناصر
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <div class="input-group">
+                            <input type="number" id="elementInput" placeholder=" " oninput="convertElement()" class="w-full">
+                            <label class="floating-label">القيمة</label>
+                        </div>
+                        
+                        <div>
+                            <label class="block mb-2 font-semibold text-gray-700">العنصر</label>
+                            <select id="elementType" onchange="convertElement()" class="w-full">
+                                <option value="N">نيتروجين (N)</option>
+                                <option value="P">فوسفور (P)</option>
+                                <option value="K">بوتاسيوم (K)</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block mb-2 font-semibold text-gray-700">السماد</label>
+                            <select id="fertilizerForElement" onchange="convertElement()" class="w-full">
+                                <option value="urea">يوريا (46% N)</option>
+                                <option value="ammonium">سلفات نشادر (21% N)</option>
+                                <option value="super">سوبر فوسفات (15% P)</option>
+                                <option value="potassium">سلفات بوتاسيوم (50% K)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="bg-green-50 rounded-lg p-6 text-center">
+                            <p class="text-gray-600 mb-2 font-medium">الكمية المطلوبة (كجم)</p>
+                            <p class="text-3xl font-bold text-green-700" id="elementResult">0</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grid-card mt-6">
+                <h4 class="font-semibold mb-4 text-yellow-800">
+                    <i class="fas fa-info-circle ml-2"></i>معلومات تحويلية
+                </h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                    <div class="bg-yellow-50 p-4 rounded-lg">
+                        <p class="font-semibold text-yellow-800 mb-2">تحويلات المساحة</p>
+                        <ul class="space-y-1 text-yellow-700">
+                            <li>• 1 فدان = 24 قيراط</li>
+                            <li>• 1 قيراط = 175 متر مربع</li>
+                        </ul>
+                    </div>
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <p class="font-semibold text-blue-800 mb-2">تحويلات الوزن</p>
+                        <ul class="space-y-1 text-blue-700">
+                            <li>• 1 شكارة = 50 كيلوجرام</li>
+                            <li>• 1 طن = 20 شكارة</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Records Page -->
+        <div id="records" class="page">
+            <h2 class="section-title">
+                <i class="fas fa-history"></i>السجلات المحفوظة
+            </h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Fertilizer Records -->
+                <div class="grid-card">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-xl font-semibold text-gray-800">
+                            <i class="fas fa-flask ml-2 text-green-600"></i>سجلات التسميد
+                        </h3>
+                        <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold" id="fertilizerCount">0 سجل</span>
+                    </div>
+                    
+                    <div id="fertilizerRecordsList" class="space-y-3 max-h-96 overflow-y-auto">
+                        <div class="empty-state">
+                            <i class="fas fa-inbox"></i>
+                            <p>لا توجد سجلات تسميد محفوظة</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Spray Records -->
+                <div class="grid-card">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-xl font-semibold text-gray-800">
+                            <i class="fas fa-spray-can ml-2 text-blue-600"></i>سجلات الرش
+                        </h3>
+                        <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold" id="sprayCount">0 سجل</span>
+                    </div>
+                    
+                    <div id="sprayRecordsList" class="space-y-3 max-h-96 overflow-y-auto">
+                        <div class="empty-state">
+                            <i class="fas fa-inbox"></i>
+                            <p>لا توجد سجلات رش محفوظة</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Statistics -->
+            <div class="grid-card mt-6">
+                <h3 class="text-xl font-semibold mb-6 text-gray-800">
+                    <i class="fas fa-chart-pie ml-2 text-purple-600"></i>إحصائيات عامة
+                </h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div class="stats-card">
+                        <h3 id="totalFertilizerCost">0</h3>
+                        <p>إجمالي تكلفة التسميد</p>
+                    </div>
+                    <div class="stats-card">
+                        <h3 id="totalSprayCost">0</h3>
+                        <p>إجمالي تكلفة الرش</p>
+                    </div>
+                    <div class="stats-card">
+                        <h3 id="totalRecords">0</h3>
+                        <p>إجمالي السجلات</p>
+                    </div>
+                    <div class="stats-card">
+                        <h3 id="avgCost">0</h3>
+                        <p>متوسط التكلفة</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Settings Page -->
+        <div id="settings" class="page">
+            <h2 class="section-title">
+                <i class="fas fa-cog"></i>الإعدادات
+            </h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- User Settings -->
+                <div class="grid-card">
+                    <h3 class="text-xl font-semibold mb-6 text-gray-800">
+                        <i class="fas fa-user ml-2"></i>إعدادات المستخدم
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <div class="input-group">
+                            <input type="text" id="settingsUserName" placeholder=" " class="w-full">
+                            <label class="floating-label">اسم المستخدم</label>
+                        </div>
+                        
+                        <div class="input-group">
+                            <input type="number" id="settingsBudget" placeholder=" " class="w-full">
+                            <label class="floating-label">الميزانية الزراعية (جنيه)</label>
+                        </div>
+                        
+                        <div>
+                            <label class="block mb-2 font-semibold text-gray-700">المحاصيل التي تزرعها</label>
+                            <div class="grid grid-cols-2 gap-2" id="cropsGrid">
+                                <label class="flex items-center space-x-2 space-x-reverse">
+                                    <input type="checkbox" value="wheat" class="crop-checkbox">
+                                    <span>قمح</span>
+                                </label>
+                                <label class="flex items-center space-x-2 space-x-reverse">
+                                    <input type="checkbox" value="corn" class="crop-checkbox">
+                                    <span>ذرة</span>
+                                </label>
+                                <label class="flex items-center space-x-2 space-x-reverse">
+                                    <input type="checkbox" value="rice" class="crop-checkbox">
+                                    <span>أرز</span>
+                                </label>
+                                <label class="flex items-center space-x-2 space-x-reverse">
+                                    <input type="checkbox" value="potato" class="crop-checkbox">
+                                    <span>بطاطس</span>
+                                </label>
+                                <label class="flex items-center space-x-2 space-x-reverse">
+                                    <input type="checkbox" value="tomato" class="crop-checkbox">
+                                    <span>طماطم</span>
+                                </label>
+                                <label class="flex items-center space-x-2 space-x-reverse">
+                                    <input type="checkbox" value="cucumber" class="crop-checkbox">
+                                    <span>خيار</span>
+                                </label>
+                                <label class="flex items-center space-x-2 space-x-reverse">
+                                    <input type="checkbox" value="onion" class="crop-checkbox">
+                                    <span>بصل</span>
+                                </label>
+                                <label class="flex items-center space-x-2 space-x-reverse">
+                                    <input type="checkbox" value="beans" class="crop-checkbox">
+                                    <span>فول</span>
+                                </label>
+                                <label class="flex items-center space-x-2 space-x-reverse">
+                                    <input type="checkbox" value="clover" class="crop-checkbox">
+                                    <span>برسيم</span>
+                                </label>
+                                <label class="flex items-center space-x-2 space-x-reverse">
+                                    <input type="checkbox" value="sugarcane" class="crop-checkbox">
+                                    <span>قصب</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <button onclick="saveUserSettings()" class="w-full btn-primary">
+                            <i class="fas fa-save ml-2"></i>حفظ الإعدادات
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- System Settings -->
+                <div class="grid-card">
+                    <h3 class="text-xl font-semibold mb-6 text-gray-800">
+                        <i class="fas fa-tools ml-2"></i>إعدادات النظام
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <div class="bg-red-50 rounded-lg p-4">
+                            <h4 class="font-semibold text-red-700 mb-2">
+                                <i class="fas fa-exclamation-triangle ml-2"></i>مسح جميع البيانات
+                            </h4>
+                            <p class="text-gray-600 text-sm mb-4">سيتم مسح جميع السجلات والمعاملات والإعدادات. هذا الإجراء لا يمكن التراجع عنه.</p>
+                            <button onclick="confirmClearAllData()" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition">
+                                <i class="fas fa-trash ml-2"></i>مسح جميع البيانات
+                            </button>
+                        </div>
+                        
+                        <!-- <div class="bg-blue-50 rounded-lg p-4">
+                            <h4 class="font-semibold text-blue-700 mb-2">
+                                <i class="fas fa-download ml-2"></i>تصدير البيانات
+                            </h4>
+                            <p class="text-gray-600 text-sm mb-4">قم بتنزيل نسخة احتياطية من جميع بياناتك</p>
+                            <button onclick="exportData()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+                                <i class="fas fa-download ml-2"></i>تصدير البيانات
+                            </button>
+                        </div> -->
+                        
+                        <div class="bg-green-50 rounded-lg p-4">
+                            <h4 class="font-semibold text-green-700 mb-2">
+                                <i class="fas fa-info-circle ml-2"></i>معلومات النظام
+                            </h4>
+                            <div class="text-sm text-gray-600 space-y-1">
+                                <p>الإصدار: 1.0.0</p>
+                                <p>آخر تحديث: <span id="lastUpdate">...</span></p>
+                                <p>عدد المستخدمين: 952</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quick Guide Page -->
+        <div id="guide" class="page">
+            <h2 class="section-title">
+                <i class="fas fa-book"></i>دليل سريع
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Fertilizer Guide -->
+                <div class="grid-card">
+                    <h3 class="text-xl font-semibold mb-6 text-gray-800">
+                        <i class="fas fa-flask ml-2"></i>دليل الأسمدة
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <div class="border-b pb-4">
+                            <h4 class="font-semibold text-green-700 mb-2">يوريا (Urea)</h4>
+                            <p class="text-gray-600">سماد نيتروجيني عالي التركيز (46% N). يستخدم في جميع المراحل النموية للمحاصيل. يفضل إضافته قبل الري مباشرة.</p>
+                        </div>
+                        
+                        <div class="border-b pb-4">
+                            <h4 class="font-semibold text-green-700 mb-2">سلفات نشادر (Ammonium Sulfate)</h4>
+                            <p class="text-gray-600">يحتوي على 21% نيتروجين و 24% كبريت. مثالي للمحاصيل التي تحتاج للكبريت مثل البصل والثوم.</p>
+                        </div>
+                        
+                        <div class="border-b pb-4">
+                            <h4 class="font-semibold text-green-700 mb-2">NPK (15-15-15)</h4>
+                            <p class="text-gray-600">سماد متوازن يحتوي على نسب متساوية من النيتروجين والفوسفور والبوتاسيوم. مثالي للمراحل الأولى من النمو.</p>
+                        </div>
+                        
+                        <div class="border-b pb-4">
+                            <h4 class="font-semibold text-green-700 mb-2">سوبر فوسفات (Super Phosphate)</h4>
+                            <p class="text-gray-600">مصدر رئيسي للفوسفور (15% P). مهم لتكوين الجذور والإزهار. يفضل إضافته عند زراعة الشتلات.</p>
+                        </div>
+                        
+                        <div>
+                            <h4 class="font-semibold text-green-700 mb-2">سلفات بوتاسيوم (Potassium Sulfate)</h4>
+                            <p class="text-gray-600">يحتوي على 50% بوتاسيوم و 18% كبريت. مهم لجودة المحصول ومقاومة الأمراض. يستخدم في مرحلة تكوين الثمار.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Safety Warnings -->
+                <div class="grid-card">
+                    <h3 class="text-xl font-semibold mb-6 text-gray-800">
+                        <i class="fas fa-exclamation-triangle ml-2"></i>تحذيرات عامة
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <div class="bg-red-50 rounded-lg p-4 border-l-4 border-red-500">
+                            <h4 class="font-semibold text-red-700 mb-2">
+                                <i class="fas fa-times-circle ml-2"></i>خلط المبيدات
+                            </h4>
+                            <p class="text-gray-600 text-sm">لا تقم بخلط نوعين مختلفين من المبيدات بدون استشارة مهندس زراعي متخصص. قد يسبب الخلط تفاعلات كيميائية خطيرة.</p>
+                        </div>
+                        
+                        <div class="bg-yellow-50 rounded-lg p-4 border-l-4 border-yellow-500">
+                            <h4 class="font-semibold text-yellow-700 mb-2">
+                                <i class="fas fa-clock ml-2"></i>وقت الرش
+                            </h4>
+                            <p class="text-gray-600 text-sm">يفضل الرش في الصباح الباكر أو بعد العصر لتجنب الحرارة الشديدة. تجنب الرش في وجود رياح قوية.</p>
+                        </div>
+                        
+                        <div class="bg-blue-50 rounded-lg p-4 border-l-4 border-blue-500">
+                            <h4 class="font-semibold text-blue-700 mb-2">
+                                <i class="fas fa-tint ml-2"></i>الري بعد التسميد
+                            </h4>
+                            <p class="text-gray-600 text-sm">قم بالري مباشرة بعد التسميد لضمان ذوبان الأسمدة ووصولها للجذور. تجنب التسميد في الأراضي الجافة جداً.</p>
+                        </div>
+                        
+                        <div class="bg-purple-50 rounded-lg p-4 border-l-4 border-purple-500">
+                            <h4 class="font-semibold text-purple-700 mb-2">
+                                <i class="fas fa-shield-alt ml-2"></i>الوقاية الشخصية
+                            </h4>
+                            <p class="text-gray-600 text-sm">استخدم القفازات والكمامة عند التعامل مع الأسمدة والمبيدات الكيميائية. اغسل يديك جيداً بعد الانتهاء.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Crop Requirements -->
+            <div class="grid-card mt-6">
+                <h3 class="text-xl font-semibold mb-6 text-gray-800">
+                    <i class="fas fa-seedling ml-2"></i>احتياجات المحاصيل من العناصر
+                </h3>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-green-50">
+                            <tr>
+                                <th class="p-4 text-right font-semibold text-gray-800">المحصول</th>
+                                <th class="p-4 text-center font-semibold text-gray-800">النيتروجين (كجم/فدان)</th>
+                                <th class="p-4 text-center font-semibold text-gray-800">الفوسفور (كجم/فدان)</th>
+                                <th class="p-4 text-center font-semibold text-gray-800">البوتاسيوم (كجم/فدان)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b hover:bg-gray-50">
+                                <td class="p-4 font-medium">قمح</td>
+                                <td class="p-4 text-center">80-100</td>
+                                <td class="p-4 text-center">40-50</td>
+                                <td class="p-4 text-center">40-50</td>
+                            </tr>
+                            <tr class="border-b bg-gray-50 hover:bg-gray-100">
+                                <td class="p-4 font-medium">ذرة</td>
+                                <td class="p-4 text-center">120-150</td>
+                                <td class="p-4 text-center">60-80</td>
+                                <td class="p-4 text-center">80-100</td>
+                            </tr>
+                            <tr class="border-b hover:bg-gray-50">
+                                <td class="p-4 font-medium">أرز</td>
+                                <td class="p-4 text-center">100-120</td>
+                                <td class="p-4 text-center">50-60</td>
+                                <td class="p-4 text-center">60-80</td>
+                            </tr>
+                            <tr class="border-b bg-gray-50 hover:bg-gray-100">
+                                <td class="p-4 font-medium">بطاطس</td>
+                                <td class="p-4 text-center">100-120</td>
+                                <td class="p-4 text-center">50-60</td>
+                                <td class="p-4 text-center">150-180</td>
+                            </tr>
+                            <tr class="border-b hover:bg-gray-50">
+                                <td class="p-4 font-medium">طماطم</td>
+                                <td class="p-4 text-center">150-200</td>
+                                <td class="p-4 text-center">80-100</td>
+                                <td class="p-4 text-center">150-200</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Mobile Bottom Navigation -->
+    <nav class="bottom-nav md:hidden" id="mobileNav" style="display: none;">
+        <div class="flex justify-around items-center py-2">
+            <div class="nav-item active text-center p-2" onclick="navigateToPage('home')">
+                <i class="fas fa-home text-2xl"></i>
+                <p class="text-xs mt-1">الرئيسية</p>
+            </div>
+            <div class="nav-item text-center p-2" onclick="navigateToPage('fertilizer')">
+                <i class="fas fa-flask text-2xl"></i>
+                <p class="text-xs mt-1">التسميد</p>
+            </div>
+            <div class="nav-item text-center p-2" onclick="navigateToPage('spray')">
+                <i class="fas fa-spray-can text-2xl"></i>
+                <p class="text-xs mt-1">الرش</p>
+            </div>
+            <div class="nav-item text-center p-2" onclick="navigateToPage('transactions')">
+                <i class="fas fa-clipboard-list text-2xl"></i>
+                <p class="text-xs mt-1">المعاملات</p>
+            </div>
+            <div class="nav-item text-center p-2" onclick="navigateToPage('records')">
+                <i class="fas fa-history text-2xl"></i>
+                <p class="text-xs mt-1">السجلات</p>
+            </div>
+            <!-- <div class="nav-item text-center p-2" onclick="navigateToPage('guide')">
+                <i class="fas fa-book text-2xl"></i>
+                <p class="text-xs mt-1">الدليل</p>
+            </div> -->
+        </div>
+    </nav>
+    
+    <!-- Edit Record Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeEditModal()">&times;</span>
+            <h3 class="text-xl font-semibold mb-4">تعديل السجل</h3>
+            <div id="editModalContent">
+                <!-- Content will be loaded dynamically -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeDeleteModal()">&times;</span>
+            <h3 class="text-xl font-semibold mb-4">تأكيد الحذف</h3>
+            <p class="mb-6">هل أنت متأكد من حذف هذا السجل؟ لا يمكن التراجع عن هذا الإجراء.</p>
+            <div class="flex justify-end space-x-3">
+                <button onclick="closeDeleteModal()" class="btn-secondary">إلغاء</button>
+                <button onclick="confirmDelete()" class="delete-btn">حذف</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Clear Data Confirmation Modal -->
+    <div id="clearDataModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeClearDataModal()">&times;</span>
+            <h3 class="text-xl font-semibold mb-4">تأكيد مسح جميع البيانات</h3>
+            <p class="mb-6">سيتم مسح جميع السجلات والمعاملات والإعدادات. هذا الإجراء لا يمكن التراجع عنه.</p>
+            <div class="flex justify-end space-x-3">
+                <button onclick="closeClearDataModal()" class="btn-secondary">إلغاء</button>
+                <button onclick="clearAllData()" class="delete-btn">مسح الكل</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    
+    <script>
+        // Global variables
+        let currentUnit = 'qirat';
+        let currentSprayUnit = 'qirat';
+        let currentUser = null;
+        let recordToDelete = null;
+        let recordToEdit = null;
+        
+        // Crop fertilizer requirements
+        const cropRequirements = {
+            wheat: { N: 90, P: 45, K: 45, fertilizer: 200 },
+            corn: { N: 135, P: 70, K: 90, fertilizer: 250 },
+            rice: { N: 100, P: 50, K: 60, fertilizer: 220 },
+            potato: { N: 110, P: 55, K: 165, fertilizer: 280 },
+            tomato: { N: 175, P: 90, K: 175, fertilizer: 350 },
+            cucumber: { N: 120, P: 60, K: 120, fertilizer: 250 },
+            onion: { N: 80, P: 40, K: 60, fertilizer: 180 },
+            beans: { N: 40, P: 60, K: 80, fertilizer: 150 },
+            clover: { N: 60, P: 30, K: 60, fertilizer: 120 },
+            sugarcane: { N: 150, P: 60, K: 120, fertilizer: 280 },
+            cotton: { N: 120, P: 60, K: 80, fertilizer: 220 },
+            barley: { N: 70, P: 35, K: 35, fertilizer: 150 },
+            sorghum: { N: 100, P: 50, K: 60, fertilizer: 200 },
+            sunflower: { N: 80, P: 40, K: 100, fertilizer: 200 },
+            pepper: { N: 140, P: 70, K: 140, fertilizer: 300 },
+            eggplant: { N: 130, P: 65, K: 130, fertilizer: 290 },
+            cabbage: { N: 150, P: 75, K: 150, fertilizer: 320 },
+            carrot: { N: 80, P: 40, K: 100, fertilizer: 200 },
+            lettuce: { N: 60, P: 30, K: 80, fertilizer: 150 }
+        };
+        
+        // Crop names in Arabic
+        const cropNames = {
+            wheat: 'قمح',
+            corn: 'ذرة',
+            rice: 'أرز',
+            potato: 'بطاطس',
+            tomato: 'طماطم',
+            cucumber: 'خيار',
+            onion: 'بصل',
+            beans: 'فول',
+            clover: 'برسيم',
+            sugarcane: 'قصب',
+            cotton: 'قطن',
+            barley: 'شعير',
+            sorghum: 'ذرة الرفيعة',
+            sunflower: 'دوار الشمس',
+            pepper: 'فلفل',
+            eggplant: 'باذنجان',
+            cabbage: 'كرنب',
+            carrot: 'جزر',
+            lettuce: 'خس',
+            other: 'أخرى'
+        };
+        
+        // Fertilizer composition
+        const fertilizerComposition = {
+            urea: { N: 0.46, P: 0, K: 0 },
+            ammonium: { N: 0.21, P: 0, K: 0 },
+            npk: { N: 0.15, P: 0.15, K: 0.15 },
+            super: { N: 0, P: 0.15, K: 0 },
+            potassium: { N: 0, P: 0, K: 0.50 }
+        };
+        
+        // Login function
+        function login() {
+            const userName = document.getElementById('loginName').value.trim();
+            if (!userName) {
+                showToast('يرجى إدخال اسم المستخدم', 'error');
+                return;
+            }
+            
+            // Create user if not exists
+            let users = JSON.parse(localStorage.getItem('users') || '{}');
+            if (!users[userName]) {
+                users[userName] = {
+                    name: userName,
+                    budget: 0,
+                    crops: [],
+                    createdAt: new Date().toISOString()
+                };
+                localStorage.setItem('users', JSON.stringify(users));
+            }
+            
+            currentUser = users[userName];
+            localStorage.setItem('currentUser', userName);
+            
+            // Show main app
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('mainHeader').style.display = 'block';
+            document.getElementById('desktopNav').style.display = 'block';
+            document.getElementById('mainContent').style.display = 'block';
+            document.getElementById('mobileNav').style.display = 'block';
+            
+            // Update user info
+            updateUserInfo();
+            
+            // Navigate to home
+            navigateToPage('home');
+            
+            showToast(`مرحباً بك ${userName}`, 'success');
+        }
+        
+        // Update user info display
+        function updateUserInfo() {
+            if (!currentUser) return;
+            
+            document.getElementById('welcomeUser').textContent = currentUser.name;
+            document.getElementById('homeUserName').textContent = currentUser.name;
+            document.getElementById('homeBudget').textContent = currentUser.budget > 0 ? `${currentUser.budget} جنيه` : 'غير محدد';
+            
+            // Update crops display
+            const cropsContainer = document.getElementById('homeCrops');
+            if (currentUser.crops && currentUser.crops.length > 0) {
+                cropsContainer.innerHTML = currentUser.crops.map(crop => 
+                    `<span class="crop-tag">${cropNames[crop] || crop}</span>`
+                ).join('');
+            } else {
+                cropsContainer.textContent = 'لم يتم تحديد محاصيل';
+            }
+            
+            // Update transactions count
+            const transactions = JSON.parse(localStorage.getItem(`transactions_${currentUser.name}`) || '[]');
+            document.getElementById('homeTransactions').textContent = transactions.length;
+            
+            // Update settings form
+            document.getElementById('settingsUserName').value = currentUser.name;
+            document.getElementById('settingsBudget').value = currentUser.budget || '';
+            
+            // Update crops checkboxes
+            const checkboxes = document.querySelectorAll('.crop-checkbox');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = currentUser.crops && currentUser.crops.includes(checkbox.value);
+            });
+        }
+        
+        // Navigation function
+        function navigateToPage(pageId) {
+            console.log('Navigating to page:', pageId);
+            
+            // Hide all pages
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show selected page
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) {
+                targetPage.classList.add('active');
+                console.log('Page activated:', pageId);
+            } else {
+                console.error('Page not found:', pageId);
+                return;
+            }
+            
+            // Update mobile navigation
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Add active class to current nav item
+            const pageMap = {
+                'home': 0,
+                'fertilizer': 1,
+                'spray': 2,
+                'transactions': 3,
+                'conversion': 4,
+                'records': 5,
+                'guide': 6,
+                'settings': 7
+            };
+            
+            if (navItems[pageMap[pageId]]) {
+                navItems[pageMap[pageId]].classList.add('active');
+            }
+            
+            // Load page-specific data
+            if (pageId === 'records') {
+                loadRecords();
+            } else if (pageId === 'transactions') {
+                loadTransactions();
+            } else if (pageId === 'settings') {
+                updateUserInfo();
+            }
+            
+            // Smooth scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        // Set unit functions
+        function setUnit(unit) {
+            currentUnit = unit;
+            const qiratBtn = document.getElementById('qiratBtn');
+            const feddanBtn = document.getElementById('feddanBtn');
+            
+            if (unit === 'qirat') {
+                qiratBtn.classList.add('bg-green-600', 'text-white');
+                qiratBtn.classList.remove('bg-gray-300', 'text-gray-700');
+                feddanBtn.classList.add('bg-gray-300', 'text-gray-700');
+                feddanBtn.classList.remove('bg-green-600', 'text-white');
+            } else {
+                feddanBtn.classList.add('bg-green-600', 'text-white');
+                feddanBtn.classList.remove('bg-gray-300', 'text-gray-700');
+                qiratBtn.classList.add('bg-gray-300', 'text-gray-700');
+                qiratBtn.classList.remove('bg-green-600', 'text-white');
+            }
+        }
+        
+        function setSprayUnit(unit) {
+            currentSprayUnit = unit;
+            const qiratBtn = document.getElementById('sprayQiratBtn');
+            const feddanBtn = document.getElementById('sprayFeddanBtn');
+            
+            if (unit === 'qirat') {
+                qiratBtn.classList.add('bg-green-600', 'text-white');
+                qiratBtn.classList.remove('bg-gray-300', 'text-gray-700');
+                feddanBtn.classList.add('bg-gray-300', 'text-gray-700');
+                feddanBtn.classList.remove('bg-green-600', 'text-white');
+            } else {
+                feddanBtn.classList.add('bg-green-600', 'text-white');
+                feddanBtn.classList.remove('bg-gray-300', 'text-gray-700');
+                qiratBtn.classList.add('bg-gray-300', 'text-gray-700');
+                qiratBtn.classList.remove('bg-green-600', 'text-white');
+            }
+        }
+        
+        // Update fertilizer amount based on crop selection
+        function updateFertilizerAmount() {
+            const cropType = document.getElementById('cropType').value;
+            const fertilizerAmountInput = document.getElementById('fertilizerAmount');
+            const customCropGroup = document.getElementById('customCropGroup');
+            
+            if (cropType === 'other') {
+                customCropGroup.style.display = 'block';
+                fertilizerAmountInput.value = '';
+            } else {
+                customCropGroup.style.display = 'none';
+                if (cropType && cropRequirements[cropType]) {
+                    fertilizerAmountInput.value = cropRequirements[cropType].fertilizer;
+                } else {
+                    fertilizerAmountInput.value = '';
+                }
+            }
+        }
+        
+        // Handle transaction type change
+        function handleTransactionTypeChange() {
+            const transactionType = document.getElementById('transactionType').value;
+            const paymentFields = document.getElementById('paymentFields');
+            
+            if (transactionType === 'service') {
+                paymentFields.style.display = 'block';
+            } else {
+                paymentFields.style.display = 'none';
+            }
+        }
+        
+        // Handle crop change in transactions
+        function handleCropChange() {
+            const cropType = document.getElementById('transactionCrop').value;
+            const customCropGroup = document.getElementById('customTransactionCropGroup');
+            
+            if (cropType === 'other') {
+                customCropGroup.style.display = 'block';
+            } else {
+                customCropGroup.style.display = 'none';
+            }
+        }
+        
+        // Handle payment change
+        function handlePaymentChange() {
+            const isPaid = document.getElementById('isPaid').value;
+            const remainingAmountGroup = document.getElementById('remainingAmountGroup');
+            
+            if (isPaid === 'no') {
+                remainingAmountGroup.style.display = 'block';
+            } else {
+                remainingAmountGroup.style.display = 'none';
+            }
+        }
+        
+        // Calculate fertilizer
+        function calculateFertilizer() {
+            const landArea = parseFloat(document.getElementById('landArea').value);
+            const fertilizerType = document.getElementById('fertilizerType').value;
+            const cropType = document.getElementById('cropType').value;
+            const customCropName = document.getElementById('customCropName').value;
+            const fertilizerAmount = parseFloat(document.getElementById('fertilizerAmount').value);
+            const bagPrice = parseFloat(document.getElementById('bagPrice').value);
+            
+            if (!landArea || !fertilizerAmount) {
+                showToast('يرجى إدخال جميع البيانات المطلوبة', 'error');
+                return;
+            }
+            
+            // Convert area to feddan
+            const areaInFeddan = currentUnit === 'qirat' ? landArea / 24 : landArea;
+            
+            // Calculate total fertilizer needed
+            let totalFertilizer = fertilizerAmount * areaInFeddan;
+            
+            // Calculate number of bags (50kg each)
+            const totalBags = Math.ceil(totalFertilizer / 50);
+            const totalWeight = totalBags * 50;
+            
+            // Calculate elements
+            const comp = fertilizerComposition[fertilizerType];
+            const nitrogen = (totalWeight * comp.N).toFixed(1);
+            const phosphorus = (totalWeight * comp.P).toFixed(1);
+            const potassium = (totalWeight * comp.K).toFixed(1);
+            
+            // Update calculation breakdown
+            document.getElementById('stepArea').textContent = landArea + ' ' + (currentUnit === 'qirat' ? 'قيراط' : 'فدان');
+            document.getElementById('stepAreaInFeddan').textContent = areaInFeddan.toFixed(3) + ' فدان';
+            document.getElementById('stepFertilizerPerFeddan').textContent = fertilizerAmount + ' كجم';
+            document.getElementById('stepTotalFertilizer').textContent = totalFertilizer.toFixed(1) + ' كجم';
+            document.getElementById('stepTotalBags').textContent = totalBags + ' شكارة';
+            
+            // Display results
+            document.getElementById('totalBags').textContent = totalBags;
+            document.getElementById('totalWeight').textContent = totalWeight;
+            document.getElementById('nitrogenAmount').textContent = nitrogen + ' وحدة';
+            document.getElementById('phosphorusAmount').textContent = phosphorus + ' وحدة';
+            document.getElementById('potassiumAmount').textContent = potassium + ' وحدة';
+            
+            // Show/hide cost section based on whether price was entered
+            const costSection = document.getElementById('costSection');
+            if (bagPrice) {
+                const totalCost = totalBags * bagPrice;
+                document.getElementById('totalCost').textContent = totalCost.toFixed(2) + ' جنيه';
+                costSection.style.display = 'block';
+            } else {
+                costSection.style.display = 'none';
+            }
+            
+            // Show results
+            document.getElementById('fertilizerResults').classList.remove('hidden');
+            document.getElementById('fertilizerPlaceholder').classList.add('hidden');
+            
+            showToast('تم حساب التسميد بنجاح', 'success');
+        }
+        
+        // Calculate spray
+        function calculateSpray() {
+            const landArea = parseFloat(document.getElementById('sprayLandArea').value);
+            const sprayAmountPerUnit = parseFloat(document.getElementById('sprayAmountPerUnit').value);
+            const numberOfSprays = parseFloat(document.getElementById('numberOfSprays').value);
+            const sprayPrice = parseFloat(document.getElementById('sprayPrice').value);
+            
+            if (!landArea || !sprayAmountPerUnit || !numberOfSprays) {
+                showToast('يرجى إدخال جميع البيانات المطلوبة', 'error');
+                return;
+            }
+            
+            // Convert area to feddan
+            const areaInFeddan = currentSprayUnit === 'qirat' ? landArea / 24 : landArea;
+            
+            // Calculate total pesticide needed
+            const totalPesticide = sprayAmountPerUnit * areaInFeddan * numberOfSprays;
+            const sprayPerSession = sprayAmountPerUnit * areaInFeddan;
+            const totalContainers = Math.ceil(totalPesticide / 5); // 5 liter containers
+            
+            // Display results
+            document.getElementById('totalPesticide').textContent = totalPesticide.toFixed(2) + ' لتر';
+            document.getElementById('totalContainers').textContent = totalContainers;
+            document.getElementById('sprayPerSession').textContent = sprayPerSession.toFixed(2) + ' لتر';
+            document.getElementById('totalSpraySessions').textContent = numberOfSprays;
+            
+            // Show/hide cost section based on whether price was entered
+            const sprayCostSection = document.getElementById('sprayCostSection');
+            if (sprayPrice) {
+                const totalCost = totalPesticide * sprayPrice;
+                document.getElementById('sprayTotalCost').textContent = totalCost.toFixed(2) + ' جنيه';
+                sprayCostSection.style.display = 'block';
+            } else {
+                sprayCostSection.style.display = 'none';
+            }
+            
+            // Show results
+            document.getElementById('sprayResults').classList.remove('hidden');
+            document.getElementById('sprayPlaceholder').classList.add('hidden');
+            
+            showToast('تم حساب الرش بنجاح', 'success');
+        }
+        
+        // Save transaction
+        function saveTransaction() {
+            const type = document.getElementById('transactionType').value;
+            const name = document.getElementById('transactionName').value.trim();
+            const crop = document.getElementById('transactionCrop').value;
+            const customCropName = document.getElementById('customTransactionCropName').value.trim();
+            const amount = parseFloat(document.getElementById('transactionAmount').value);
+            const date = document.getElementById('transactionDate').value;
+            const forWhom = document.getElementById('transactionFor').value.trim();
+            const notes = document.getElementById('transactionNotes').value.trim();
+            const isPaid = document.getElementById('isPaid') ? document.getElementById('isPaid').value : 'yes';
+            const remainingAmount = document.getElementById('remainingAmount') ? parseFloat(document.getElementById('remainingAmount').value) || 0 : 0;
+            
+            if (!name || !amount || !date) {
+                showToast('يرجى إدخال جميع البيانات المطلوبة', 'error');
+                return;
+            }
+            
+            const transaction = {
+                id: Date.now(),
+                type: type,
+                name: name,
+                crop: crop,
+                customCropName: customCropName,
+                amount: amount,
+                date: date,
+                forWhom: forWhom,
+                notes: notes,
+                isPaid: isPaid,
+                remainingAmount: remainingAmount,
+                createdAt: new Date().toISOString()
+            };
+            
+            // Get existing transactions
+            let transactions = JSON.parse(localStorage.getItem(`transactions_${currentUser.name}`) || '[]');
+            transactions.unshift(transaction);
+            localStorage.setItem(`transactions_${currentUser.name}`, JSON.stringify(transactions));
+            
+            // Clear form
+            document.getElementById('transactionName').value = '';
+            document.getElementById('transactionAmount').value = '';
+            document.getElementById('transactionFor').value = '';
+            document.getElementById('transactionNotes').value = '';
+            document.getElementById('customTransactionCropName').value = '';
+            document.getElementById('remainingAmount').value = '';
+            document.getElementById('transactionDate').value = new Date().toISOString().split('T')[0];
+            
+            // Reload transactions
+            loadTransactions();
+            
+            showToast('تم حفظ المعاملة بنجاح', 'success');
+        }
+        
+        // Load transactions
+        function loadTransactions() {
+            const transactions = JSON.parse(localStorage.getItem(`transactions_${currentUser.name}`) || '[]');
+            const transactionsList = document.getElementById('transactionsList');
+            
+            if (transactions.length === 0) {
+                transactionsList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-receipt"></i>
+                        <p>لا توجد معاملات مسجلة</p>
+                    </div>
+                `;
+            } else {
+                transactionsList.innerHTML = transactions.map(transaction => {
+                    const cropName = transaction.customCropName || cropNames[transaction.crop] || transaction.crop;
+                    const typeClass = transaction.type === 'income' ? 'income' : 
+                                     transaction.type === 'service' ? 'service' : 'expense';
+                    
+                    return `
+                        <div class="transaction-card">
+                            <div class="transaction-header">
+                                <div>
+                                    <div class="transaction-title">${transaction.name}</div>
+                                    <div class="transaction-date">${transaction.date}</div>
+                                </div>
+                                <div class="transaction-amount ${typeClass}">
+                                    ${transaction.amount} جنيه
+                                </div>
+                            </div>
+                            
+                            <div class="transaction-details">
+                                <div class="transaction-detail">
+                                    <i class="fas fa-seedling"></i>
+                                    ${cropName}
+                                </div>
+                                <div class="transaction-detail">
+                                    <i class="fas fa-user"></i>
+                                    ${transaction.forWhom || '---'}
+                                </div>
+                                ${transaction.type === 'service' ? `
+                                    <div class="transaction-detail">
+                                        <i class="fas fa-money-bill-wave"></i>
+                                        <span class="transaction-status ${transaction.isPaid === 'yes' ? 'status-paid' : 'status-unpaid'}">
+                                            ${transaction.isPaid === 'yes' ? 'مدفوع' : 'غير مدفوع'}
+                                        </span>
+                                    </div>
+                                    ${transaction.remainingAmount > 0 ? `
+                                        <div class="transaction-detail">
+                                            <i class="fas fa-coins"></i>
+                                            الباقي: ${transaction.remainingAmount} جنيه
+                                        </div>
+                                    ` : ''}
+                                ` : ''}
+                            </div>
+                            
+                            ${transaction.notes ? `
+                                <div class="mt-3 p-3 bg-gray-50 rounded-lg">
+                                    <p class="text-sm text-gray-600">
+                                        <i class="fas fa-sticky-note ml-1"></i>
+                                        ${transaction.notes}
+                                    </p>
+                                </div>
+                            ` : ''}
+                            
+                            <div class="transaction-actions">
+                                <button onclick="editTransaction(${transaction.id})" class="edit-btn">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button onclick="deleteTransaction(${transaction.id})" class="delete-btn">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+            
+            // Calculate totals
+            const totalIncome = transactions
+                .filter(t => t.type === 'income')
+                .reduce((sum, t) => sum + t.amount, 0);
+            
+            const totalExpense = transactions
+                .filter(t => t.type === 'expense')
+                .reduce((sum, t) => sum + t.amount, 0);
+            
+            const netBalance = totalIncome - totalExpense;
+            
+            document.getElementById('totalIncome').textContent = totalIncome.toFixed(2) + ' جنيه';
+            document.getElementById('totalExpense').textContent = totalExpense.toFixed(2) + ' جنيه';
+            document.getElementById('netBalance').textContent = netBalance.toFixed(2) + ' جنيه';
+            document.getElementById('netBalance').className = `text-lg font-bold ${netBalance >= 0 ? 'text-green-600' : 'text-red-600'}`;
+            
+            // Update home page
+            document.getElementById('homeTransactions').textContent = transactions.length;
+        }
+        
+        // Edit transaction
+        function editTransaction(id) {
+            const transactions = JSON.parse(localStorage.getItem(`transactions_${currentUser.name}`) || '[]');
+            const transaction = transactions.find(t => t.id === id);
+            
+            if (!transaction) return;
+            
+            // Fill form with transaction data
+            document.getElementById('transactionType').value = transaction.type;
+            document.getElementById('transactionName').value = transaction.name;
+            document.getElementById('transactionCrop').value = transaction.crop;
+            document.getElementById('customTransactionCropName').value = transaction.customCropName || '';
+            document.getElementById('transactionAmount').value = transaction.amount;
+            document.getElementById('transactionDate').value = transaction.date;
+            document.getElementById('transactionFor').value = transaction.forWhom || '';
+            document.getElementById('transactionNotes').value = transaction.notes || '';
+            
+            // Handle service fields
+            if (transaction.type === 'service') {
+                document.getElementById('isPaid').value = transaction.isPaid || 'yes';
+                document.getElementById('remainingAmount').value = transaction.remainingAmount || 0;
+                document.getElementById('paymentFields').style.display = 'block';
+                document.getElementById('remainingAmountGroup').style.display = transaction.isPaid === 'no' ? 'block' : 'none';
+            } else {
+                document.getElementById('paymentFields').style.display = 'none';
+            }
+            
+            // Handle custom crop
+            if (transaction.crop === 'other') {
+                document.getElementById('customTransactionCropGroup').style.display = 'block';
+            } else {
+                document.getElementById('customTransactionCropGroup').style.display = 'none';
+            }
+            
+            // Scroll to form
+            document.querySelector('#transactions .grid-card').scrollIntoView({ behavior: 'smooth' });
+            
+            showToast('تم تحميل بيانات المعاملة للتعديل', 'info');
+        }
+        
+        // Delete transaction
+        function deleteTransaction(id) {
+            recordToDelete = { type: 'transaction', id: id };
+            document.getElementById('deleteModal').style.display = 'block';
+        }
+        
+        // Save fertilizer results
+        function saveFertilizerResults() {
+            const notes = document.getElementById('fertilizerNotes').value;
+            const bagPrice = parseFloat(document.getElementById('bagPrice').value);
+            
+            const data = {
+                id: Date.now(),
+                type: 'fertilizer',
+                date: new Date().toLocaleDateString('ar-EG'),
+                time: new Date().toLocaleTimeString('ar-EG'),
+                results: {
+                    bags: document.getElementById('totalBags').textContent,
+                    weight: document.getElementById('totalWeight').textContent,
+                    nitrogen: document.getElementById('nitrogenAmount').textContent,
+                    phosphorus: document.getElementById('phosphorusAmount').textContent,
+                    potassium: document.getElementById('potassiumAmount').textContent,
+                    cost: bagPrice ? document.getElementById('totalCost').textContent : 'غير محسوب'
+                },
+                notes: notes
+            };
+            
+            // Get existing records
+            let fertilizerRecords = JSON.parse(localStorage.getItem(`fertilizerRecords_${currentUser.name}`) || '[]');
+            fertilizerRecords.unshift(data);
+            localStorage.setItem(`fertilizerRecords_${currentUser.name}`, JSON.stringify(fertilizerRecords));
+            
+            showToast('تم حفظ النتائج بنجاح', 'success');
+            
+            // Clear notes
+            document.getElementById('fertilizerNotes').value = '';
+        }
+        
+        // Save spray results
+        function saveSprayResults() {
+            const notes = document.getElementById('sprayNotes').value;
+            const sprayPrice = parseFloat(document.getElementById('sprayPrice').value);
+            
+            const data = {
+                id: Date.now(),
+                type: 'spray',
+                date: new Date().toLocaleDateString('ar-EG'),
+                time: new Date().toLocaleTimeString('ar-EG'),
+                results: {
+                    pesticide: document.getElementById('totalPesticide').textContent,
+                    containers: document.getElementById('totalContainers').textContent,
+                    perSession: document.getElementById('sprayPerSession').textContent,
+                    sessions: document.getElementById('totalSpraySessions').textContent,
+                    cost: sprayPrice ? document.getElementById('sprayTotalCost').textContent : 'غير محسوب'
+                },
+                notes: notes
+            };
+            
+            // Get existing records
+            let sprayRecords = JSON.parse(localStorage.getItem(`sprayRecords_${currentUser.name}`) || '[]');
+            sprayRecords.unshift(data);
+            localStorage.setItem(`sprayRecords_${currentUser.name}`, JSON.stringify(sprayRecords));
+            
+            showToast('تم حفظ النتائج بنجاح', 'success');
+            
+            // Clear notes
+            document.getElementById('sprayNotes').value = '';
+        }
+        
+        // Load records
+        function loadRecords() {
+            // Load fertilizer records
+            const fertilizerRecords = JSON.parse(localStorage.getItem(`fertilizerRecords_${currentUser.name}`) || '[]');
+            const fertilizerList = document.getElementById('fertilizerRecordsList');
+            
+            if (fertilizerRecords.length === 0) {
+                fertilizerList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-inbox"></i>
+                        <p>لا توجد سجلات تسميد محفوظة</p>
+                    </div>
+                `;
+            } else {
+                fertilizerList.innerHTML = fertilizerRecords.map(record => `
+                    <div class="record-item">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <p class="font-semibold text-gray-800">${record.date} - ${record.time}</p>
+                                <p class="text-sm text-gray-600">عدد الشكاير: ${record.results.bags} | التكلفة: ${record.results.cost}</p>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <button onclick="editRecord('fertilizer', ${record.id})" class="edit-btn">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button onclick="deleteRecord('fertilizer', ${record.id})" class="delete-btn">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        ${record.notes ? `<p class="text-sm text-gray-700 mt-2"><i class="fas fa-sticky-note ml-1"></i>${record.notes}</p>` : ''}
+                    </div>
+                `).join('');
+            }
+            
+            // Load spray records
+            const sprayRecords = JSON.parse(localStorage.getItem(`sprayRecords_${currentUser.name}`) || '[]');
+            const sprayList = document.getElementById('sprayRecordsList');
+            
+            if (sprayRecords.length === 0) {
+                sprayList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-inbox"></i>
+                        <p>لا توجد سجلات رش محفوظة</p>
+                    </div>
+                `;
+            } else {
+                sprayList.innerHTML = sprayRecords.map(record => `
+                    <div class="record-item">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <p class="font-semibold text-gray-800">${record.date} - ${record.time}</p>
+                                <p class="text-sm text-gray-600">المبيد: ${record.results.pesticide} | التكلفة: ${record.results.cost}</p>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <button onclick="editRecord('spray', ${record.id})" class="edit-btn">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button onclick="deleteRecord('spray', ${record.id})" class="delete-btn">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        ${record.notes ? `<p class="text-sm text-gray-700 mt-2"><i class="fas fa-sticky-note ml-1"></i>${record.notes}</p>` : ''}
+                    </div>
+                `).join('');
+            }
+            
+            // Update counts
+            document.getElementById('fertilizerCount').textContent = `${fertilizerRecords.length} سجل`;
+            document.getElementById('sprayCount').textContent = `${sprayRecords.length} سجل`;
+            
+            // Calculate statistics
+            const totalFertilizerCost = fertilizerRecords.reduce((sum, record) => {
+                const cost = record.results.cost.replace(' جنيه', '').replace('غير محسوب', '0');
+                return sum + parseFloat(cost);
+            }, 0);
+            
+            const totalSprayCost = sprayRecords.reduce((sum, record) => {
+                const cost = record.results.cost.replace(' جنيه', '').replace('غير محسوب', '0');
+                return sum + parseFloat(cost);
+            }, 0);
+            
+            const totalRecords = fertilizerRecords.length + sprayRecords.length;
+            const avgCost = totalRecords > 0 ? (totalFertilizerCost + totalSprayCost) / totalRecords : 0;
+            
+            document.getElementById('totalFertilizerCost').textContent = totalFertilizerCost.toFixed(2) + ' جنيه';
+            document.getElementById('totalSprayCost').textContent = totalSprayCost.toFixed(2) + ' جنيه';
+            document.getElementById('totalRecords').textContent = totalRecords;
+            document.getElementById('avgCost').textContent = avgCost.toFixed(2) + ' جنيه';
+        }
+        
+        // Edit record
+        function editRecord(type, id) {
+            recordToEdit = { type, id };
+            
+            let records;
+            if (type === 'fertilizer') {
+                records = JSON.parse(localStorage.getItem(`fertilizerRecords_${currentUser.name}`) || '[]');
+            } else {
+                records = JSON.parse(localStorage.getItem(`sprayRecords_${currentUser.name}`) || '[]');
+            }
+            
+            const record = records.find(r => r.id === id);
+            if (!record) return;
+            
+            // Show edit modal
+            const modal = document.getElementById('editModal');
+            const content = document.getElementById('editModalContent');
+            
+            content.innerHTML = `
+                <div class="space-y-4">
+                    <div class="input-group">
+                        <input type="text" id="editNotes" value="${record.notes || ''}" class="w-full">
+                        <label class="floating-label">ملاحظات</label>
+                    </div>
+                    <div class="flex justify-end space-x-3">
+                        <button onclick="closeEditModal()" class="btn-secondary">إلغاء</button>
+                        <button onclick="updateRecord()" class="btn-primary">حفظ التعديلات</button>
+                    </div>
+                </div>
+            `;
+            
+            modal.style.display = 'block';
+        }
+        
+        // Update record
+        function updateRecord() {
+            if (!recordToEdit) return;
+            
+            const notes = document.getElementById('editNotes').value;
+            
+            let records;
+            if (recordToEdit.type === 'fertilizer') {
+                records = JSON.parse(localStorage.getItem(`fertilizerRecords_${currentUser.name}`) || '[]');
+            } else {
+                records = JSON.parse(localStorage.getItem(`sprayRecords_${currentUser.name}`) || '[]');
+            }
+            
+            const recordIndex = records.findIndex(r => r.id === recordToEdit.id);
+            if (recordIndex !== -1) {
+                records[recordIndex].notes = notes;
+                localStorage.setItem(`${recordToEdit.type}Records_${currentUser.name}`, JSON.stringify(records));
+            }
+            
+            closeEditModal();
+            loadRecords();
+            showToast('تم تحديث السجل بنجاح', 'success');
+        }
+        
+        // Delete record
+        function deleteRecord(type, id) {
+            recordToDelete = { type, id };
+            document.getElementById('deleteModal').style.display = 'block';
+        }
+        
+        // Confirm delete
+        function confirmDelete() {
+            if (!recordToDelete) return;
+            
+            if (recordToDelete.type === 'transaction') {
+                let transactions = JSON.parse(localStorage.getItem(`transactions_${currentUser.name}`) || '[]');
+                transactions = transactions.filter(t => t.id !== recordToDelete.id);
+                localStorage.setItem(`transactions_${currentUser.name}`, JSON.stringify(transactions));
+                loadTransactions();
+            } else {
+                let records = JSON.parse(localStorage.getItem(`${recordToDelete.type}Records_${currentUser.name}`) || '[]');
+                records = records.filter(r => r.id !== recordToDelete.id);
+                localStorage.setItem(`${recordToDelete.type}Records_${currentUser.name}`, JSON.stringify(records));
+                loadRecords();
+            }
+            
+            closeDeleteModal();
+            showToast('تم حذف السجل بنجاح', 'success');
+        }
+        
+        // Save user settings
+        function saveUserSettings() {
+            const userName = document.getElementById('settingsUserName').value.trim();
+            const budget = parseFloat(document.getElementById('settingsBudget').value) || 0;
+            
+            const selectedCrops = Array.from(document.querySelectorAll('.crop-checkbox:checked'))
+                .map(cb => cb.value);
+            
+            // Update current user
+            currentUser.name = userName;
+            currentUser.budget = budget;
+            currentUser.crops = selectedCrops;
+            
+            // Update users object
+            let users = JSON.parse(localStorage.getItem('users') || '{}');
+            users[userName] = currentUser;
+            localStorage.setItem('users', JSON.stringify(users));
+            
+            // Update current user in storage
+            localStorage.setItem('currentUser', userName);
+            
+            // Update display
+            updateUserInfo();
+            
+            showToast('تم حفظ الإعدادات بنجاح', 'success');
+        }
+        
+        // Confirm clear all data
+        function confirmClearAllData() {
+            document.getElementById('clearDataModal').style.display = 'block';
+        }
+        
+        // Clear all data
+        function clearAllData() {
+            if (!currentUser) return;
+            
+            // Clear all user data
+            localStorage.removeItem(`fertilizerRecords_${currentUser.name}`);
+            localStorage.removeItem(`sprayRecords_${currentUser.name}`);
+            localStorage.removeItem(`transactions_${currentUser.name}`);
+            
+            // Reset user data
+            currentUser.budget = 0;
+            currentUser.crops = [];
+            
+            let users = JSON.parse(localStorage.getItem('users') || '{}');
+            users[currentUser.name] = currentUser;
+            localStorage.setItem('users', JSON.stringify(users));
+            
+            closeClearDataModal();
+            updateUserInfo();
+            showToast('تم مسح جميع البيانات بنجاح', 'success');
+        }
+        
+        // Export data
+        function exportData() {
+            if (!currentUser) return;
+            
+            const data = {
+                user: currentUser,
+                fertilizerRecords: JSON.parse(localStorage.getItem(`fertilizerRecords_${currentUser.name}`) || '[]'),
+                sprayRecords: JSON.parse(localStorage.getItem(`sprayRecords_${currentUser.name}`) || '[]'),
+                transactions: JSON.parse(localStorage.getItem(`transactions_${currentUser.name}`) || '[]'),
+                exportDate: new Date().toISOString()
+            };
+            
+            const dataStr = JSON.stringify(data, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = `farm_data_${currentUser.name}_${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            
+            showToast('تم تصدير البيانات بنجاح', 'success');
+        }
+        
+        // Modal functions
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+            recordToEdit = null;
+        }
+        
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').style.display = 'none';
+            recordToDelete = null;
+        }
+        
+        function closeClearDataModal() {
+            document.getElementById('clearDataModal').style.display = 'none';
+        }
+        
+        // Unit conversion functions
+        function convertArea() {
+            const value = parseFloat(document.getElementById('areaInput').value);
+            const fromUnit = document.getElementById('fromUnit').value;
+            const toUnit = document.getElementById('toUnit').value;
+            
+            if (!value) {
+                document.getElementById('areaResult').textContent = '0';
+                return;
+            }
+            
+            let result;
+            if (fromUnit === 'qirat' && toUnit === 'feddan') {
+                result = value / 24;
+            } else if (fromUnit === 'feddan' && toUnit === 'qirat') {
+                result = value * 24;
+            } else {
+                result = value;
+            }
+            
+            document.getElementById('areaResult').textContent = result.toFixed(3);
+        }
+        
+        function convertWeight() {
+            const value = parseFloat(document.getElementById('weightInput').value);
+            const fromUnit = document.getElementById('fromWeightUnit').value;
+            const toUnit = document.getElementById('toWeightUnit').value;
+            
+            if (!value) {
+                document.getElementById('weightResult').textContent = '0';
+                return;
+            }
+            
+            let result;
+            if (fromUnit === 'kg' && toUnit === 'bag') {
+                result = value / 50;
+            } else if (fromUnit === 'bag' && toUnit === 'kg') {
+                result = value * 50;
+            } else {
+                result = value;
+            }
+            
+            document.getElementById('weightResult').textContent = result.toFixed(2);
+        }
+        
+        function convertElement() {
+            const value = parseFloat(document.getElementById('elementInput').value);
+            const element = document.getElementById('elementType').value;
+            const fertilizer = document.getElementById('fertilizerForElement').value;
+            
+            if (!value) {
+                document.getElementById('elementResult').textContent = '0';
+                return;
+            }
+            
+            const comp = fertilizerComposition[fertilizer];
+            let result = 0;
+            
+            if (element === 'N' && comp.N > 0) {
+                result = value / comp.N;
+            } else if (element === 'P' && comp.P > 0) {
+                result = value / comp.P;
+            } else if (element === 'K' && comp.K > 0) {
+                result = value / comp.K;
+            }
+            
+            document.getElementById('elementResult').textContent = result.toFixed(2);
+        }
+        
+        // Toast notification
+        function showToast(message, type = 'info') {
+            const colors = {
+                success: '#2d6a4f',
+                error: '#e63946',
+                info: '#457b9d'
+            };
+            
+            Toastify({
+                text: message,
+                duration: 3000,
+                gravity: "top",
+                position: "left",
+                style: {
+                    background: colors[type],
+                    color: 'white',
+                    borderRadius: '8px',
+                    fontFamily: "'Cairo', sans-serif"
+                }
+            }).showToast();
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is logged in
+            const savedUser = localStorage.getItem('currentUser');
+            if (savedUser) {
+                const users = JSON.parse(localStorage.getItem('users') || '{}');
+                currentUser = users[savedUser];
+                
+                if (currentUser) {
+                    // Show main app
+                    document.getElementById('loginPage').style.display = 'none';
+                    document.getElementById('mainHeader').style.display = 'block';
+                    document.getElementById('desktopNav').style.display = 'block';
+                    document.getElementById('mainContent').style.display = 'block';
+                    document.getElementById('mobileNav').style.display = 'block';
+                    
+                    updateUserInfo();
+                    navigateToPage('home');
+                }
+            }
+            
+            // Set initial units
+            setUnit('qirat');
+            setSprayUnit('qirat');
+            
+            // Set today's date as default for transactions
+            document.getElementById('transactionDate').value = new Date().toISOString().split('T')[0];
+            
+            // Update last update time
+            document.getElementById('lastUpdate').textContent = new Date().toLocaleDateString('ar-EG');
+            
+            console.log('Page loaded successfully');
+        });
+    </script>
+</body>
+</html>
