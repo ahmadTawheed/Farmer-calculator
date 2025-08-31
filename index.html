@@ -604,7 +604,7 @@
         <div id="home" class="page">
             <div class="text-center mb-10">
                 <h2 class="text-3xl md:text-4xl font-bold text-green-800 mb-4">مرحباً بك في حاسبة الفلاح</h2>
-                <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">Made By Ahmed Tawheed</p>
+                <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">Made By <a target="_blank" href="https://ahmadtawheed.github.io/portfolio/" class="text-green-900 font-bold">Ahmed Tawheed</a></p>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
@@ -718,13 +718,35 @@
                         
                         <div>
                             <label class="block mb-2 font-semibold text-gray-700">نوع السماد</label>
-                            <select id="fertilizerType" class="w-full">
+                            <select id="fertilizerType" onchange="handleFertilizerTypeChange()" class="w-full">
                                 <option value="urea">يوريا (46% N)</option>
                                 <option value="ammonium">سلفات نشادر (21% N)</option>
                                 <option value="npk">NPK (15-15-15)</option>
                                 <option value="super">سوبر فوسفات (15% P)</option>
                                 <option value="potassium">سلفات بوتاسيوم (50% K)</option>
+                                <option value="other">أخرى</option>
                             </select>
+                        </div>
+                        
+                        <div id="customFertilizerGroup" style="display: none;">
+                            <div class="input-group">
+                                <input type="text" id="customFertilizerName" placeholder=" " class="w-full">
+                                <label class="floating-label">اسم السماد</label>
+                            </div>
+                            <div class="grid grid-cols-3 gap-3">
+                                <div class="input-group">
+                                    <input type="number" id="customNitrogenPercent" placeholder=" " class="w-full" min="0" max="100">
+                                    <label class="floating-label">النيتروجين (%)</label>
+                                </div>
+                                <div class="input-group">
+                                    <input type="number" id="customPhosphorusPercent" placeholder=" " class="w-full" min="0" max="100">
+                                    <label class="floating-label">الفوسفور (%)</label>
+                                </div>
+                                <div class="input-group">
+                                    <input type="number" id="customPotassiumPercent" placeholder=" " class="w-full" min="0" max="100">
+                                    <label class="floating-label">البوتاسيوم (%)</label>
+                                </div>
+                            </div>
                         </div>
                         
                         <div>
@@ -1366,7 +1388,16 @@
                                     <input type="checkbox" value="sugarcane" class="crop-checkbox">
                                     <span>قصب</span>
                                 </label>
+                                <label class="flex items-center space-x-2 space-x-reverse">
+                                    <input type="checkbox" value="other" class="crop-checkbox" onchange="handleOtherCropChange()">
+                                    <span>أخرى</span>
+                                </label>
                             </div>
+                        </div>
+                        
+                        <div class="input-group" id="customCropInputGroup" style="display: none;">
+                            <input type="text" id="customCropInput" placeholder=" " class="w-full">
+                            <label class="floating-label">اسم المحصول الآخر</label>
                         </div>
                         
                         <button onclick="saveUserSettings()" class="w-full btn-primary">
@@ -1409,7 +1440,7 @@
                             <div class="text-sm text-gray-600 space-y-1">
                                 <p>الإصدار: 1.0.0</p>
                                 <p>آخر تحديث: <span id="lastUpdate">...</span></p>
-                                <p>عدد المستخدمين: 952</p>
+                                <p>عدد المستخدمين: 461</p>
                             </div>
                         </div>
                     </div>
@@ -1734,9 +1765,14 @@
             // Update crops display
             const cropsContainer = document.getElementById('homeCrops');
             if (currentUser.crops && currentUser.crops.length > 0) {
-                cropsContainer.innerHTML = currentUser.crops.map(crop => 
-                    `<span class="crop-tag">${cropNames[crop] || crop}</span>`
-                ).join('');
+                cropsContainer.innerHTML = currentUser.crops.map(crop => {
+                    // If crop is in the known crops list, use the known name
+                    if (cropNames[crop]) {
+                        return `<span class="crop-tag">${cropNames[crop]}</span>`;
+                    }
+                    // Otherwise use the name as is (custom crop)
+                    return `<span class="crop-tag">${crop}</span>`;
+                }).join('');
             } else {
                 cropsContainer.textContent = 'لم يتم تحديد محاصيل';
             }
@@ -1754,6 +1790,14 @@
             checkboxes.forEach(checkbox => {
                 checkbox.checked = currentUser.crops && currentUser.crops.includes(checkbox.value);
             });
+            
+            // If there are custom crops, display them in the custom input field
+            const customCrops = currentUser.crops ? currentUser.crops.filter(crop => !cropNames[crop]) : [];
+            if (customCrops.length > 0) {
+                document.getElementById('customCropInput').value = customCrops.join(', ');
+                document.querySelector('input[value="other"].crop-checkbox').checked = true;
+                document.getElementById('customCropInputGroup').style.display = 'block';
+            }
         }
         
         // Navigation function
@@ -1848,6 +1892,30 @@
             }
         }
         
+        // Handle fertilizer type change
+        function handleFertilizerTypeChange() {
+            const fertilizerType = document.getElementById('fertilizerType').value;
+            const customFertilizerGroup = document.getElementById('customFertilizerGroup');
+            
+            if (fertilizerType === 'other') {
+                customFertilizerGroup.style.display = 'block';
+            } else {
+                customFertilizerGroup.style.display = 'none';
+            }
+        }
+        
+        // Handle other crop change in settings
+        function handleOtherCropChange() {
+            const otherCropCheckbox = document.querySelector('input[value="other"].crop-checkbox');
+            const customCropInputGroup = document.getElementById('customCropInputGroup');
+            
+            if (otherCropCheckbox.checked) {
+                customCropInputGroup.style.display = 'block';
+            } else {
+                customCropInputGroup.style.display = 'none';
+            }
+        }
+        
         // Update fertilizer amount based on crop selection
         function updateFertilizerAmount() {
             const cropType = document.getElementById('cropType').value;
@@ -1928,10 +1996,24 @@
             const totalWeight = totalBags * 50;
             
             // Calculate elements
-            const comp = fertilizerComposition[fertilizerType];
-            const nitrogen = (totalWeight * comp.N).toFixed(1);
-            const phosphorus = (totalWeight * comp.P).toFixed(1);
-            const potassium = (totalWeight * comp.K).toFixed(1);
+            let nitrogen = 0, phosphorus = 0, potassium = 0;
+            
+            if (fertilizerType === 'other') {
+                // Use custom fertilizer values
+                const customNitrogen = parseFloat(document.getElementById('customNitrogenPercent').value) || 0;
+                const customPhosphorus = parseFloat(document.getElementById('customPhosphorusPercent').value) || 0;
+                const customPotassium = parseFloat(document.getElementById('customPotassiumPercent').value) || 0;
+                
+                nitrogen = (totalWeight * customNitrogen / 100).toFixed(1);
+                phosphorus = (totalWeight * customPhosphorus / 100).toFixed(1);
+                potassium = (totalWeight * customPotassium / 100).toFixed(1);
+            } else {
+                // Use default fertilizer values
+                const comp = fertilizerComposition[fertilizerType];
+                nitrogen = (totalWeight * comp.N).toFixed(1);
+                phosphorus = (totalWeight * comp.P).toFixed(1);
+                potassium = (totalWeight * comp.K).toFixed(1);
+            }
             
             // Update calculation breakdown
             document.getElementById('stepArea').textContent = landArea + ' ' + (currentUnit === 'qirat' ? 'قيراط' : 'فدان');
@@ -2207,12 +2289,28 @@
         function saveFertilizerResults() {
             const notes = document.getElementById('fertilizerNotes').value;
             const bagPrice = parseFloat(document.getElementById('bagPrice').value);
+            const fertilizerType = document.getElementById('fertilizerType').value;
+            
+            let fertilizerName = '';
+            if (fertilizerType === 'other') {
+                fertilizerName = document.getElementById('customFertilizerName').value || 'سماد مخصص';
+            } else {
+                const fertilizerNames = {
+                    'urea': 'يوريا',
+                    'ammonium': 'سلفات نشادر',
+                    'npk': 'NPK',
+                    'super': 'سوبر فوسفات',
+                    'potassium': 'سلفات بوتاسيوم'
+                };
+                fertilizerName = fertilizerNames[fertilizerType] || fertilizerType;
+            }
             
             const data = {
                 id: Date.now(),
                 type: 'fertilizer',
                 date: new Date().toLocaleDateString('ar-EG'),
                 time: new Date().toLocaleTimeString('ar-EG'),
+                fertilizerName: fertilizerName,
                 results: {
                     bags: document.getElementById('totalBags').textContent,
                     weight: document.getElementById('totalWeight').textContent,
@@ -2285,7 +2383,7 @@
                         <div class="flex justify-between items-start mb-2">
                             <div>
                                 <p class="font-semibold text-gray-800">${record.date} - ${record.time}</p>
-                                <p class="text-sm text-gray-600">عدد الشكاير: ${record.results.bags} | التكلفة: ${record.results.cost}</p>
+                                <p class="text-sm text-gray-600">السماد: ${record.fertilizerName || 'غير محدد'} | عدد الشكاير: ${record.results.bags} | التكلفة: ${record.results.cost}</p>
                             </div>
                             <div class="flex items-center space-x-2">
                                 <button onclick="editRecord('fertilizer', ${record.id})" class="edit-btn">
@@ -2449,6 +2547,19 @@
             
             const selectedCrops = Array.from(document.querySelectorAll('.crop-checkbox:checked'))
                 .map(cb => cb.value);
+            
+            // Add custom crop if selected
+            const otherCropCheckbox = document.querySelector('input[value="other"].crop-checkbox');
+            if (otherCropCheckbox.checked) {
+                const customCropName = document.getElementById('customCropInput').value.trim();
+                if (customCropName) {
+                    // Remove "other" and add the custom name
+                    const index = selectedCrops.indexOf('other');
+                    if (index !== -1) {
+                        selectedCrops.splice(index, 1, customCropName);
+                    }
+                }
+            }
             
             // Update current user
             currentUser.name = userName;
